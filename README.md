@@ -20,8 +20,8 @@ Frontend: React.js, Next.js, TypeScript, ShadcnUI
 Backend: Node.js, Next.js
 Authentication: Clerk
 Database: Convex
-OtherTech: Liveblocks ===========================================================
-===========================================================
+OtherTech: Liveblocks ========================================================
+========================================================
 
 All npm installation commands:
 Nextjs installation
@@ -31,3 +31,4 @@ shadcnUI (A Component Library)
 -npx shadcn@latest init
 -npx shadcn@latest add dialog
 -npx shadcn@latest add tooltip
+-npx shadcn@latest add input
