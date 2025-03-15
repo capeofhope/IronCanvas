@@ -1,6 +1,6 @@
 import { Button } from "@/components/ui/button";
 import { api } from "@/convex/_generated/api";
-import { useApiMutation } from "@/hooks/use-api-mutation";
+import { useApiMutation } from "@/convex/hooks/use_api_mutation";
 import { useOrganization } from "@clerk/clerk-react";
 import Image from "next/image";
 import { toast } from "sonner";
