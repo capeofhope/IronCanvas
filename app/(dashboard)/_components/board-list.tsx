@@ -17,10 +17,8 @@ interface BoardListProps {
 }
 
 export const BoardList = ({ orgId, query }: BoardListProps) => {
-  //Todo: Change an API call
-  const data = useQuery(api.boards.get, { orgId });
-  // console.log(data);
-  if (data===undefined) {
+  const data = useQuery(api.boards.get, { orgId,search:query.search,favorites:query.favorites });
+  if (data === undefined) {
     return (
       <div className="">
         <h2 className="text-3xl">
@@ -64,7 +62,7 @@ export const BoardList = ({ orgId, query }: BoardListProps) => {
             authorName={board.authorName}
             createdAt={board._creationTime}
             orgId={board.orgId}
-            isFavorite={false}
+            isFavorite={board.isFavorite}
           />
         ))}
       </div>

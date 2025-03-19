@@ -13,6 +13,7 @@ export const SearchInput = () => {
   const debouncedValue = useDebounceValue(value, 500);
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setValue(e.target.value);
+    
   };
   useEffect(() => {
     const url = qs.stringifyUrl({

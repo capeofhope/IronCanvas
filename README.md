@@ -19,7 +19,7 @@ Technology Used:
 Frontend: React.js, Next.js, TypeScript, ShadcnUI
 Backend: Node.js, Next.js
 Authentication: Clerk
-Database: Convex
+Database: Convex (with convex-helpers)
 OtherTech: Liveblocks ========================================================
 ========================================================
 
