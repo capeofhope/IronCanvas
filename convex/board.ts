@@ -88,7 +88,7 @@ export const favorite=mutation({
             throw new Error("Board not found")
         }
         const userId=identity.subject;
-        const existingFavorite=await ctx.db.query("userFavorites").withIndex("by_user_board",(q)=>
+        const existingFavorite=await ctx.db.query("userFavorites").withIndex("by_user_board_org",(q)=>
             q
             .eq("userId",userId)
             .eq("boardId",board._id)
