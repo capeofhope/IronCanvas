@@ -2,7 +2,13 @@ import { createClient } from "@liveblocks/client";
 import { createRoomContext } from "@liveblocks/react";
 
 const client = createClient({
-  publicApiKey: "pk_dev_CKyLYxit-58vSaTgBIdNzEwO0MmfLMXfz0_vX0979UFoWRupVhT7iXsC5E3-1ZK6",
+  authEndpoint: "/api/liveblocks-auth",
+  // Optional: Set the WebSocket URL if you are using a custom server
+  // webSocketUrl: "wss://your-websocket-url",
+  // Optional: Set the WebSocket connection timeout
+  // webSocketConnectionTimeout: 10000,
+  // Optional: Set the presence update interval in milliseconds
+  // presenceUpdateInterval: 1000,
 });
 
 // Presence represents the properties that exist on every user in the Room
@@ -25,10 +31,13 @@ type Storage = {
 // Optionally, UserMeta represents static/readonly metadata on each user, as
 // provided by your own custom auth back end (if used). Useful for data that
 // will not change during a session, like a user's name or avatar.
-// type UserMeta = {
-//   id?: string,  // Accessible through `user.id`
-//   info?: Json,  // Accessible through `user.info`
-// };
+type UserMeta = {
+  id?: string,  // Accessible through `user.id`
+  info?: {
+    name?: string,  // Accessible through `user.info.name`
+    picture?: string,  // Accessible through `user.info.picture`
+  },  // Accessible through `user.info`
+};
 
 // Optionally, the type of custom events broadcast and listened to in this
 // room. Use a union for multiple events. Must be JSON-serializable.

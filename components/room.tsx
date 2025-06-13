@@ -1,7 +1,10 @@
 "use client";
 
 import React, { ReactNode } from "react";
-import { ClientSideSuspense } from "@liveblocks/react/suspense";
+import {
+  ClientSideSuspense,
+  LiveblocksProvider,
+} from "@liveblocks/react/suspense";
 import { RoomProvider } from "../liveblocks.config";
 
 interface RoomProps {
@@ -9,12 +12,14 @@ interface RoomProps {
   roomId: string;
   fallback: NonNullable<ReactNode> | null;
 }
-export function Room({ children, roomId,fallback }: RoomProps) {
+export function Room({ children, roomId, fallback }: RoomProps) {
   return (
-    <RoomProvider id={roomId} initialPresence={{}}>
-      <ClientSideSuspense fallback={fallback}>
-        {() => children}
-      </ClientSideSuspense>
-    </RoomProvider>
+    <LiveblocksProvider authEndpoint={"/api/liveblocks-auth"}>
+      <RoomProvider id={roomId} initialPresence={{}}>
+        <ClientSideSuspense fallback={fallback}>
+          {() => children}
+        </ClientSideSuspense>
+      </RoomProvider>
+    </LiveblocksProvider>
   );
 }
