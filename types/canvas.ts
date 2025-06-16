@@ -97,6 +97,7 @@ export type CanvasState=|{
     mode:CanvasMode.Resizing,
     initialBounds:XYWH,
     corner:Side,
+
 }|{
     mode:CanvasMode.Pencil,
     // points:{x:number,y:number}[]
@@ -105,3 +106,5 @@ export type CanvasState=|{
 export enum CanvasMode{
     None,Pressing,SelectionNet,Translating,Inserting,Resizing,Pencil
 }
+
+export type Layer=RectangleLayer|EllipseLayer|TextLayer|PathLayer| NoteLayer;

@@ -1,4 +1,5 @@
-import { createClient } from "@liveblocks/client";
+import { createClient ,LiveList,LiveMap,LiveObject} from "@liveblocks/client";
+import { Layer,Color } from "./types/canvas";
 import { createRoomContext } from "@liveblocks/react";
 
 const client = createClient({
@@ -16,8 +17,8 @@ const client = createClient({
 // and that will automatically be kept in sync. Accessible through the
 // `user.presence` property. Must be JSON-serializable.
 type Presence = {
-  cursor: { x: number, y: number } | null,
-  // ...
+  cursor: { x: number, y: number } | null;
+  selection:string [];  // Represents the current selection in the canvas
 };
 
 // Optionally, Storage represents the shared document that persists in the
@@ -25,8 +26,8 @@ type Presence = {
 // LiveList, LiveMap, LiveObject instances, for which updates are
 // automatically persisted and synced to all connected clients.
 type Storage = {
-  // animals: LiveList<string>,
-  // ...
+  layers:LiveMap<string,LiveObject<Layer>>;  // Accessible through `storage.layers`
+  layerIds: LiveList<string>;  // Accessible through `storage.layerIds`
 };
 
 // Optionally, UserMeta represents static/readonly metadata on each user, as
