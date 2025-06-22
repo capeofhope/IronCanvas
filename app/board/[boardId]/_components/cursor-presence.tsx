@@ -1,6 +1,6 @@
 "use client";
 import { memo } from "react";
-import { useOthersConnectionIds } from "@liveblocks/react";
+import { useOthersConnectionIds } from "@/liveblocks.config";
 import { Cursor } from "./cursor";
 
 const Cursors = () => {

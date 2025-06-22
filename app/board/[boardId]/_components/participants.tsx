@@ -1,5 +1,5 @@
 "use client";
-import { useOthers, useSelf } from "@liveblocks/react";
+import { useOthers, useSelf } from "@/liveblocks.config";
 import { UserAvatar } from "./user-avatar";
 import { connectionIdToColor } from "@/lib/utils";
 const MAX_SHOWN_USERS = 2;

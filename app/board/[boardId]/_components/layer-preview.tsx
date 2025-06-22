@@ -1,7 +1,7 @@
 "use client";
 
 import { LayerType } from "@/types/canvas";
-import { useStorage } from "@liveblocks/react";
+import { useStorage } from "@/liveblocks.config";
 import { memo } from "react";
 import { Rectangle } from "./rectangle";
 
@@ -11,15 +11,10 @@ interface LayerPreviewProps {
   selectionColor?: string;
 }
 export const LayerPreview = memo(
-  ({ id, onLayerPointerDown, selectionColor }: LayerPreviewProps) => {
-    const layer = useStorage((root) => {
+  ({ id, onLayerPointerDown, selectionColor }: LayerPreviewProps) => {    const layer = useStorage((root) => {
       const layers = root.layers;
       if (layers instanceof Map) {
         return layers.get(id);
-      }
-      // If layers is a plain object
-      if (typeof layers === "object" && layers !== null) {
-        return (layers as Record<string, unknown>)[id];
       }
       return undefined;
     });

@@ -57,6 +57,15 @@ export const {
   RoomProvider,
   useMyPresence,
   useStorage,
+  useSelf,
+  useOthers,
+  useOther,
+  useOthersConnectionIds,
+  useHistory,
+  useCanRedo,
+  useCanUndo,
+  useMutation,
+  useOthersMapped,
 
   // Other hooks
   // ...
