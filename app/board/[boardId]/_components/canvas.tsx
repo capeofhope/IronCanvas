@@ -117,7 +117,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
     },
     [history]
   );
-  const translateSelectedLayer = useMutation(
+  const translateSelectedLayers = useMutation(
     ({ storage, self }, point: Point) => {
       if (canvasState.mode !== CanvasMode.Translating) {
         return;
@@ -127,13 +127,18 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         y: point.y - canvasState.current.y,
       };
       const liveLayers: any = storage.get("layers");
-      const layer = liveLayers.get(self.presence.selection[0]);
-      if (layer) {
-        layer.update({
-          x: layer.get("x") + offset.x,
-          y: layer.get("y") + offset.y,
-        });
-      }
+
+      // Move all selected layers
+      self.presence.selection.forEach((layerId: string) => {
+        const layer = liveLayers.get(layerId);
+        if (layer) {
+          layer.update({
+            x: layer.get("x") + offset.x,
+            y: layer.get("y") + offset.y,
+          });
+        }
+      });
+
       setCanvasState({
         mode: CanvasMode.Translating,
         current: point,
@@ -147,6 +152,11 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       y: camera.y - e.deltaY,
     }));
   }, []);
+
+  const updateCursor = useMutation(({ setMyPresence }, cursor: Point) => {
+    setMyPresence({ cursor });
+  }, []);
+
   const insertLayer = useMutation(
     (
       { storage, setMyPresence },
@@ -202,7 +212,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
           current,
         });
       } else if (canvasState.mode === CanvasMode.Translating) {
-        translateSelectedLayer(current);
+        translateSelectedLayers(current);
       } else if (canvasState.mode === CanvasMode.Resizing) {
         resizeSelectedLayer(current);
       }
@@ -214,15 +224,12 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       canvasState,
       resizeSelectedLayer,
       camera,
-      translateSelectedLayer,
+      translateSelectedLayers,
       updateSelectionNet,
       startMultiSelection,
+      updateCursor,
     ]
   );
-
-  const updateCursor = useMutation(({ setMyPresence }, cursor: Point) => {
-    setMyPresence({ cursor });
-  }, []);
   const onPointerDown = useMutation(
     ({}, e: React.PointerEvent) => {
       const point = pointerEventToCanvasPoint(e, camera);
