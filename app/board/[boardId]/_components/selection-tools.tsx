@@ -8,7 +8,7 @@ import { ColorPicker } from "./color-picker";
 import { useDeleteLayers } from "@/convex/hooks/use_delete_layers";
 import { Hint } from "@/components/hint";
 import { Button } from "@/components/ui/button";
-import { Trash2 } from "lucide-react";
+import { BringToFront, SendToBack, Trash2 } from "lucide-react";
 
 interface SelectionToolsProps {
   camera: Camera;
@@ -18,6 +18,52 @@ interface SelectionToolsProps {
 export const SelectionTools = memo(
   ({ camera, setLastUsedColor }: SelectionToolsProps) => {
     const selection = useSelf((me: any) => me.presence.selection);
+    const moveToFront = useMutation(
+      ({ storage }) => {
+        const liveLayerIds = storage.get("layerIds");
+        const indices: number[] = [];
+        const arr = liveLayerIds.toArray();
+
+        // Find indices of selected layers
+        for (let i = 0; i < arr.length; i++) {
+          if (selection.includes(arr[i])) {
+            indices.push(i);
+          }
+        }
+
+        // Sort indices in ascending order
+        indices.sort((a, b) => a - b);
+
+        // Move each selected layer to the front (end of array)
+        indices.reverse().forEach((index, i) => {
+          liveLayerIds.move(index, arr.length - 1 - i);
+        });
+      },
+      [selection]
+    );
+    const moveToBack = useMutation(
+      ({ storage }) => {
+        const liveLayerIds = storage.get("layerIds");
+        const indices: number[] = [];
+        const arr = liveLayerIds.toArray();
+
+        // Find indices of selected layers
+        for (let i = 0; i < arr.length; i++) {
+          if (selection.includes(arr[i])) {
+            indices.push(i);
+          }
+        }
+
+        // Sort indices in descending order to avoid index shifting issues
+        indices.sort((a, b) => b - a);
+
+        // Move each selected layer to the back (beginning of array)
+        indices.forEach((index, i) => {
+          liveLayerIds.move(index, i);
+        });
+      },
+      [selection]
+    );
     const setFill = useMutation(
       ({ storage }, fill: Color) => {
         const liveLayers = storage.get("layers");
@@ -47,7 +93,19 @@ export const SelectionTools = memo(
             transform: `translate(calc(${x}px - 50%), calc(${y - 16}px - 100%))`,
           }}
         >
-          <ColorPicker onChange={setFill} />
+          <ColorPicker onChange={setFill} />{" "}
+          <div className="flex flex-col gap-y-0.5">
+            <Hint label="Bring to front">
+              <Button variant={"board"} size={"icon"} onClick={moveToFront}>
+                <BringToFront />
+              </Button>
+            </Hint>
+            <Hint label="Send to back">
+              <Button variant={"board"} size={"icon"} onClick={moveToBack}>
+                <SendToBack />
+              </Button>
+            </Hint>
+          </div>
           <div className="flex items-center pl-2 ml-2 border-l border-neutral-200">
             <Hint label="Delete">
               <Button variant={"board"} size={"icon"} onClick={deleteLayers}>
