@@ -19,6 +19,8 @@ const client = createClient({
 type Presence = {
   cursor: { x: number, y: number } | null;
   selection:string [];  // Represents the current selection in the canvas
+  pencilDraft:[x:number,y:number,pressure:number][] | null;  // Represents the current pencil draft
+  penColor: Color | null;  // Represents the current pen color
 };
 
 // Optionally, Storage represents the shared document that persists in the
