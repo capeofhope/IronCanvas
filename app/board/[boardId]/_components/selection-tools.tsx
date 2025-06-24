@@ -17,7 +17,7 @@ interface SelectionToolsProps {
 
 export const SelectionTools = memo(
   ({ camera, setLastUsedColor }: SelectionToolsProps) => {
-    const selection = useSelf((me: any) => me.presence.selection);
+    const selection = useSelf((me) => me.presence.selection);
     const moveToFront = useMutation(
       ({ storage }) => {
         const liveLayerIds = storage.get("layerIds");
@@ -26,7 +26,7 @@ export const SelectionTools = memo(
 
         // Find indices of selected layers
         for (let i = 0; i < arr.length; i++) {
-          if (selection.includes(arr[i])) {
+          if (selection && selection.includes(arr[i])) {
             indices.push(i);
           }
         }
@@ -45,11 +45,9 @@ export const SelectionTools = memo(
       ({ storage }) => {
         const liveLayerIds = storage.get("layerIds");
         const indices: number[] = [];
-        const arr = liveLayerIds.toImmutable();
-
-        // Find indices of selected layers
+        const arr = liveLayerIds.toImmutable(); // Find indices of selected layers
         for (let i = 0; i < arr.length; i++) {
-          if (selection.includes(arr[i])) {
+          if (selection && selection.includes(arr[i])) {
             indices.push(i);
           }
         }
@@ -68,7 +66,7 @@ export const SelectionTools = memo(
       ({ storage }, fill: Color) => {
         const liveLayers = storage.get("layers");
         setLastUsedColor(fill);
-        selection.forEach((layerId: any) => {
+        selection?.forEach((layerId: string) => {
           const layer = liveLayers.get(layerId);
           if (layer) {
             layer.set("fill", fill);

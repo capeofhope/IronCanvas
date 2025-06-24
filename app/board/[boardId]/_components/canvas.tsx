@@ -9,6 +9,10 @@ import {
   Point,
   Side,
   XYWH,
+  RectangleLayer,
+  EllipseLayer,
+  TextLayer,
+  NoteLayer,
 } from "@/types/canvas";
 import { Info } from "./info";
 import { Participants } from "./participants";
@@ -108,7 +112,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         canvasState.corner,
         point
       );
-      const liveLayers: any = storage.get("layers");
+      const liveLayers = storage.get("layers");
       const layer = liveLayers.get(self.presence.selection[0]);
       if (layer) {
         layer.update(bounds);
@@ -154,7 +158,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
       if (canvasState.mode !== CanvasMode.Pencil) {
         return;
       }
-      const liveLayers: any = storage.get("layers");
+      const liveLayers = storage.get("layers");
       const { pencilDraft } = self.presence;
       if (
         pencilDraft == null ||
@@ -171,7 +175,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         id,
         new LiveObject(penPointsToPathLayer(pencilDraft, lastUsedColor))
       );
-      const liveLayerIds: any = storage.get("layerIds");
+      const liveLayerIds = storage.get("layerIds");
       liveLayerIds.push(id);
       setMyPresence(
         {
@@ -207,7 +211,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         x: point.x - canvasState.current.x,
         y: point.y - canvasState.current.y,
       };
-      const liveLayers: any = storage.get("layers");
+      const liveLayers = storage.get("layers");
 
       // Move all selected layers
       self.presence.selection.forEach((layerId: string) => {
@@ -249,23 +253,64 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         | LayerType.Text,
       position: Point
     ) => {
-      const liveLayers: any = storage.get("layers");
+      const liveLayers = storage.get("layers");
       if (liveLayers instanceof Array && liveLayers.length >= MAX_LAYERS) {
         return;
       }
-      const liveLayerIds: any = storage.get("layerIds");
+      const liveLayerIds = storage.get("layerIds");
       if (liveLayerIds.length >= MAX_LAYERS) {
         return;
       }
       const layerId = nanoid();
-      const layer = new LiveObject({
-        type: layerType,
-        x: position.x,
-        y: position.y,
-        width: 100,
-        height: 100,
-        fill: lastUsedColor,
-      });
+      let layer;
+
+      switch (layerType) {
+        case LayerType.Rectangle:
+          layer = new LiveObject<RectangleLayer>({
+            type: LayerType.Rectangle,
+            x: position.x,
+            y: position.y,
+            width: 100,
+            height: 100,
+            fill: lastUsedColor,
+          });
+          break;
+        case LayerType.Ellipse:
+          layer = new LiveObject<EllipseLayer>({
+            type: LayerType.Ellipse,
+            x: position.x,
+            y: position.y,
+            width: 100,
+            height: 100,
+            fill: lastUsedColor,
+          });
+          break;
+        case LayerType.Text:
+          layer = new LiveObject<TextLayer>({
+            type: LayerType.Text,
+            x: position.x,
+            y: position.y,
+            width: 100,
+            height: 100,
+            fill: lastUsedColor,
+            value: "Text",
+          });
+          break;
+        case LayerType.Note:
+          layer = new LiveObject<NoteLayer>({
+            type: LayerType.Note,
+            x: position.x,
+            y: position.y,
+            width: 100,
+            height: 100,
+            fill: lastUsedColor,
+            value: "Note",
+          });
+          break;
+        default:
+          return;
+      }
+
       liveLayerIds.push(layerId);
       liveLayers.set(layerId, layer);
       setMyPresence({ selection: [layerId] }, { addToHistory: true });
@@ -371,11 +416,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
   }, []);
   const selections = useOthersMapped((other) => other.presence.selection);
   const onLayerPointerDown = useMutation(
-    (
-      { self, setMyPresence }: { self: any; setMyPresence: any },
-      e: React.PointerEvent,
-      layerId: string
-    ) => {
+    ({ self, setMyPresence }, e: React.PointerEvent, layerId: string) => {
       if (
         canvasState.mode === CanvasMode.Pencil ||
         canvasState.mode === CanvasMode.Inserting
@@ -462,7 +503,7 @@ export const Canvas = ({ boardId }: CanvasProps) => {
         >
           {" "}
           {Array.isArray(layerIds)
-            ? layerIds.map((layerId: any) => (
+            ? layerIds.map((layerId: string) => (
                 <LayerPreview
                   key={layerId}
                   id={layerId}

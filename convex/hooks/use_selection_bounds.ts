@@ -32,11 +32,11 @@ const boundingBox=(layers:Layer[]):XYWH|null=>{
 }
 
 export const useSelectionBounds = () => {
-  const selection:any=useSelf((me:any)=>me.presence.selection);
-  return useStorage((root)=>{
+  const selection = useSelf((me) => me.presence.selection);
+  return useStorage((root) => {
         const layersMap = root.layers as Map<string, Layer> | undefined;
-        const selectedLayers = selection?.map((layerId: any) => layersMap?.get(layerId)!).filter(Boolean) || [];
+        const selectedLayers = selection?.map((layerId: string) => layersMap?.get(layerId)!).filter(Boolean) || [];
         if (selectedLayers.length === 0) return null;
         return boundingBox(selectedLayers);
-  },shallow)
+  }, shallow)
 };

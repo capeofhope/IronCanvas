@@ -1,6 +1,6 @@
 "use client";
 
-import { FormEvent, FormEventHandler, useEffect, useState } from "react";
+import { FormEventHandler, useEffect, useState } from "react";
 import {
   Dialog,
   DialogContent,

@@ -11,7 +11,7 @@ import { Path } from "./path";
 import { colorToCss } from "@/lib/utils";
 
 interface LayerPreviewProps {
-  id: any;
+  id: string;
   onLayerPointerDown: (e: React.PointerEvent, layerId: string) => void;
   selectionColor?: string;
 }

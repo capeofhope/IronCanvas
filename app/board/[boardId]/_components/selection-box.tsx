@@ -13,7 +13,7 @@ const HANDLE_WIDTH = 6;
 
 export const SelectionBox = memo(
   ({ onResizeHandlePointerDown }: SelectionBoxProps) => {
-    const soleLayerId = useSelf((me: any) =>
+    const soleLayerId = useSelf((me) =>
       me.presence.selection?.length === 1 ? me.presence.selection[0] : null
     );
     const isShowingHandles = useStorage((root) => {
