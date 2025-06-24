@@ -10,7 +10,6 @@ import {
   Type,
   Undo2,
 } from "lucide-react";
-import { set } from "date-fns";
 interface ToolbarProps {
   canvasState: CanvasState;
   setCanvasState: (newState: CanvasState) => void;

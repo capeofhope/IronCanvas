@@ -13,7 +13,7 @@ import {
 import { Info } from "./info";
 import { Participants } from "./participants";
 import { Toolbar } from "./toolbar";
-import React, { use, useCallback, useEffect, useMemo, useState } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   useHistory,
   useCanRedo,
@@ -35,7 +35,6 @@ import {
 } from "@/lib/utils";
 import { LiveObject } from "@liveblocks/client";
 import { LayerPreview } from "./layer-preview";
-import { set } from "date-fns";
 import { SelectionBox } from "./selection-box";
 import { SelectionTools } from "./selection-tools";
 import getStroke from "perfect-freehand";
