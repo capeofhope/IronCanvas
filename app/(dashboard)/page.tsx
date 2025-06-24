@@ -1,24 +1,21 @@
-"use client";
-import { useOrganization } from "@clerk/clerk-react";
-import { EmptyOrg } from "./_components/empty-org";
-import { BoardList } from "./_components/board-list";
+import { Suspense } from "react";
+import { DashboardContent } from "./_components/dashboard-content";
 
 interface DashboardPageProps {
-  searchParams: {
+  searchParams: Promise<{
     search?: string;
     favorites?: string;
-  };
+  }>;
 }
 
-const DashboardPage = ({ searchParams }: DashboardPageProps) => {
-  const { organization } = useOrganization();
+const DashboardPage = async ({ searchParams }: DashboardPageProps) => {
+  const resolvedSearchParams = await searchParams;
+
   return (
     <div className=" flex-1 h-[calc(100%-80px)] p-6">
-      {!organization ? (
-        <EmptyOrg />
-      ) : (
-        <BoardList orgId={organization.id} query={searchParams} />
-      )}
+      <Suspense fallback={<div>Loading...</div>}>
+        <DashboardContent searchParams={resolvedSearchParams} />
+      </Suspense>
     </div>
   );
 };

@@ -1,7 +1,6 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
   images: {
     remotePatterns: [
       {
@@ -10,21 +9,8 @@ const nextConfig: NextConfig = {
       }
     ]
   },
-  // Ensure proper handling of serverless functions
-  experimental: {
-    serverComponentsExternalPackages: ["@liveblocks/node"]
-  },
-  // Optimize for Vercel deployment
-  swcMinify: true,
-  // Handle API routes properly
-  async rewrites() {
-    return [
-      {
-        source: '/api/:path*',
-        destination: '/api/:path*',
-      },
-    ];
-  },
+  // Updated for Next.js 15
+  serverExternalPackages: ["@liveblocks/node"],
 };
 
 export default nextConfig;
