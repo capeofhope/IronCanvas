@@ -48,7 +48,7 @@ const BoardCard = ({
           .then(() => {
             toast.success("Board unfavorited");
           })
-          .catch((error) => {
+          .catch(() => {
             toast.error("Failed to unfavorite board");
           });
 
@@ -58,7 +58,7 @@ const BoardCard = ({
           .then(() => {
             toast.success("Board favorited");
           })
-          .catch((error) => {
+          .catch(() => {
             toast.error("Failed to favorite board");
           });
         isFavorite = true;

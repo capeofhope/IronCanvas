@@ -111,8 +111,10 @@ export const SelectionTools = memo(
               </Button>
             </Hint>
           </div>
-        </div>
+        </div>{" "}
       </>
     );
   }
 );
+
+SelectionTools.displayName = "SelectionTools";
